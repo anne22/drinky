@@ -48,13 +48,49 @@ let linearTheme = {
       fontWeight: "700",
       textDecorationLine: "underline",
       fontSize: 20,
+      backgroundColor: "#a2a3a3",
+      padding: 10,
+      minHeight: 50,
+      marginBottom: 20,
     }
-  },
+  },itemDay: {
+    idle: ({ isPressed, isWeekend }) => ({
+      container: {
+        backgroundColor: isPressed ? "darkgrey" : "transparent",
+        borderRadius: 4,
+      },
+      content: {
+        color: isWeekend && !isPressed ? "rgba(255, 255, 255, 0.5)" : "#ffffff",
+      },
+    }),
+    today: ({ isPressed }) => ({
+      container: {
+        borderColor: "rgba(255, 255, 255, 0.5)",
+        borderRadius: isPressed ? 4 : 30,
+        backgroundColor: isPressed ? "darkgrey" : "transparent",
+      },
+      content: {
+        color: isPressed ? "#ffffff" : "rgba(255, 255, 255, 0.5)",
+      },
+    }),
+    active: ({ isEndOfRange, isStartOfRange }) => ({
+      container: {
+        backgroundColor: "#42d6b1",
+        borderTopLeftRadius: isStartOfRange ? 4 : 0,
+        borderBottomLeftRadius: isStartOfRange ? 4 : 0,
+        borderTopRightRadius: isEndOfRange ? 4 : 0,
+        borderBottomRightRadius: isEndOfRange ? 4 : 0,
+      },
+      content: {
+        color: "#ffffff",
+      },
+    }),
+  }
 };
     
 let styles = StyleSheet.create({
   container: {
-    backgroundColor: 'pink',
+    backgroundColor: '#41494a',
     paddingTop: 80,
   },
 });
