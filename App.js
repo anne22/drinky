@@ -1,6 +1,6 @@
 import { Calendar, toDateId, CalendarTheme } from "@marceloterreiro/flash-calendar";
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Modal, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Modal, Pressable, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 
 const today = toDateId(new Date());
@@ -42,6 +42,7 @@ export default function App() {
   let dateRanges = datesToRanges(dates);
 
   return (
+    <ScrollView>
     <View style={styles.container}> 
     
       <Modal animationType="slide" transparent={true} visible={showConfirmation} >
@@ -64,9 +65,26 @@ export default function App() {
         calendarActiveDateRanges={dateRanges}
         onCalendarDayPress={handleClick}
         />
-
+      <Calendar
+        calendarMonthId={today}
+        theme={linearTheme}
+        calendarActiveDateRanges={dateRanges}
+        onCalendarDayPress={handleClick}
+        />
+              <Calendar
+        calendarMonthId={today}
+        theme={linearTheme}
+        calendarActiveDateRanges={dateRanges}
+        onCalendarDayPress={handleClick}
+        />
+              <Calendar
+        calendarMonthId={today}
+        theme={linearTheme}
+        calendarActiveDateRanges={dateRanges}
+        onCalendarDayPress={handleClick}
+        />
       <StatusBar style="auto" />
-    </View>
+    </View></ScrollView>
   );
 }
 
