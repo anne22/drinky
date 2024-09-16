@@ -1,4 +1,4 @@
-import { Calendar, toDateId, CalendarTheme } from "@marceloterreiro/flash-calendar";
+import { Calendar, toDateId } from "@marceloterreiro/flash-calendar";
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Modal, Pressable, ScrollView } from 'react-native';
 import React, { useState } from 'react';
@@ -59,7 +59,6 @@ export default function App() {
 
   return (
     <ScrollView>
-
     <View style={styles.container}> 
     
       <Modal animationType="slide" transparent={true} visible={showConfirmation} >
