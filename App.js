@@ -3,8 +3,6 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Modal, Pressable, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 
-const today = toDateId(new Date());
-
 let selectedDates = new Set();
 
 export default function App() {
@@ -29,8 +27,8 @@ export default function App() {
   function handleClick(date) {
     setShowConfirmation(true);
     setcurrentdate(date);
-    
   }
+
   function onDrank() {
     setShowConfirmation(false);
     if (selectedDates.has(currentdate)) {
@@ -38,7 +36,26 @@ export default function App() {
     }
     setDates(new Set(selectedDates));
   }
+
   let dateRanges = datesToRanges(dates);
+
+  let months = []
+  for (let i = 0; i < 12; i++) {
+    let currentMonth = new Date();
+    currentMonth.setDate(1);
+    currentMonth.setMonth(currentMonth.getMonth() - i);
+    let currentMonthId = toDateId(currentMonth);
+
+    months.push(
+      <Calendar
+        key={currentMonthId}
+        calendarMonthId={currentMonthId}
+        theme={linearTheme}
+        calendarActiveDateRanges={dateRanges}
+        onCalendarDayPress={handleClick}
+        />
+    );
+  }
 
   return (
     <ScrollView>
@@ -58,32 +75,11 @@ export default function App() {
       </View>
       </Modal>
 
-      <Calendar
-        calendarMonthId={today}
-        theme={linearTheme}
-        calendarActiveDateRanges={dateRanges}
-        onCalendarDayPress={handleClick}
-        />
-      <Calendar
-        calendarMonthId={today}
-        theme={linearTheme}
-        calendarActiveDateRanges={dateRanges}
-        onCalendarDayPress={handleClick}
-        />
-              <Calendar
-        calendarMonthId={today}
-        theme={linearTheme}
-        calendarActiveDateRanges={dateRanges}
-        onCalendarDayPress={handleClick}
-        />
-        <Calendar
-        calendarMonthId={today}
-        theme={linearTheme}
-        calendarActiveDateRanges={dateRanges}
-        onCalendarDayPress={handleClick}
-        />
+      {months}
+
       <StatusBar style="auto" />
-    </View></ScrollView>
+    </View>
+    </ScrollView>
   );
 }
 
