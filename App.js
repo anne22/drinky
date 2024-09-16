@@ -1,4 +1,4 @@
-import { Calendar, toDateId, CalendarTheme } from "@marceloterreiro/flash-calendar";
+import { Calendar, toDateId } from "@marceloterreiro/flash-calendar";
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Modal, Pressable, ScrollView } from 'react-native';
 import React, { useState } from 'react';
@@ -21,7 +21,6 @@ export default function App() {
   function onSober() {
     setShowConfirmation(false);
     if (!selectedDates.has(currentdate)) {
-   
       selectedDates.add(currentdate);
     }
     setDates(new Set(selectedDates));
@@ -77,7 +76,7 @@ export default function App() {
         calendarActiveDateRanges={dateRanges}
         onCalendarDayPress={handleClick}
         />
-              <Calendar
+        <Calendar
         calendarMonthId={today}
         theme={linearTheme}
         calendarActiveDateRanges={dateRanges}
