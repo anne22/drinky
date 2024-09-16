@@ -120,7 +120,7 @@ let linearTheme = {
   },itemDay: {
     idle: ({ isPressed, isWeekend }) => ({
       container: {
-        backgroundColor: isPressed ? "darkgrey" : "transparent",
+        backgroundColor: isPressed ? "transparent" : "#f0438b",
         borderRadius: 4,
       },
       content: {
