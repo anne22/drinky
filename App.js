@@ -1,10 +1,29 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Calendar, toDateId } from "@marceloterreiro/flash-calendar";
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Modal, Pressable, ScrollView } from 'react-native';
 import React, { useState } from 'react';
-
+const storeData = async (value) => {
+  try {
+    const jsonValue = JSON.stringify(value);
+    console.log(jsonValue);
+    await AsyncStorage.setItem('sober-dates', jsonValue);
+  } catch (e) {
+    // saving error
+  }
+};
+const getData = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('sober-dates');console.log(jsonValue);
+    return jsonValue != null ? JSON.parse(jsonValue) : [];
+  } catch (e) {
+    // error reading value
+  }
+};
 let selectedDates = new Set();
-
+getData().then((value) => {
+  selectedDates = new Set(value);
+});
 export default function App() {
   const [dates, setDates] = useState(new Set());
   const [currentdate, setcurrentdate] = useState(false);
@@ -15,12 +34,13 @@ export default function App() {
       return { startId: date, endId: date };
     });
   }
-
+ 
   function onSober() {
     setShowConfirmation(false);
     if (!selectedDates.has(currentdate)) {
       selectedDates.add(currentdate);
     }
+    storeData(Array.from(selectedDates));
     setDates(new Set(selectedDates));
   }
   
@@ -34,6 +54,7 @@ export default function App() {
     if (selectedDates.has(currentdate)) {
       selectedDates.delete(currentdate);
     }
+    storeData(Array.from(selectedDates));
     setDates(new Set(selectedDates));
   }
 
