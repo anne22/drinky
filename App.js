@@ -68,6 +68,7 @@ export default function App() {
     let currentMonthId = toDateId(currentMonth);
 
     months.push(
+      <View style={styles.calbox}> 
       <Calendar
         key={currentMonthId}
         calendarMonthId={currentMonthId}
@@ -75,6 +76,7 @@ export default function App() {
         calendarActiveDateRanges={dateRanges}
         onCalendarDayPress={handleClick}
         />
+      </View>
     );
   }
 
@@ -113,14 +115,15 @@ let linearTheme = {
       textDecorationLine: "underline",
       fontSize: 20,
       backgroundColor: "#a2a3a3",
-      padding: 10,
-      minHeight: 50,
-      marginBottom: 20,
+      padding: 1,
+      minHeight: 25,
+      marginBottom: 70,
+      marginTop: 80,
     }
   },itemDay: {
     idle: ({ isPressed, isWeekend }) => ({
       container: {
-        backgroundColor: isPressed ? "transparent" : "#f0438b",
+        backgroundColor: isPressed ? "transparent" : "grey",
         borderRadius: 4,
       },
       content: {
@@ -139,7 +142,7 @@ let linearTheme = {
     }),
     active: ({ isEndOfRange, isStartOfRange }) => ({
       container: {
-        backgroundColor: "#42d6b1",
+        backgroundColor: "lightgrey",
         borderTopLeftRadius: isStartOfRange ? 4 : 0,
         borderBottomLeftRadius: isStartOfRange ? 4 : 0,
         borderTopRightRadius: isEndOfRange ? 4 : 0,
@@ -158,6 +161,10 @@ let styles = StyleSheet.create({
     height: '100%',
     paddingTop: 80,
   },
+  calbox: {
+    backgroundColor: '#41494a',
+    margin: 10,
+  },
   centered: {
     alignItems: 'center',
     flex: 1,
@@ -165,7 +172,7 @@ let styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   modal: {
-    backgroundColor: '#41494a',
+    backgroundColor: 'lightgrey',
 
     paddingTop: 80,
   },
