@@ -3,6 +3,62 @@ import { Calendar, toDateId } from "@marceloterreiro/flash-calendar";
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Modal, Pressable, ScrollView } from 'react-native';
 import React, { useState, useEffect } from 'react';
+
+// Custom component to handle future dates
+const FutureAwareCalendar = ({ currentMonth, calendarMonthId, theme, calendarActiveDateRanges, onCalendarDayPress }) => {
+  // Check if this is the current month
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
+  const isCurrentMonth = (
+    currentMonth.getMonth() === month && 
+    currentMonth.getFullYear() === year
+  );
+  
+  // If not current month, just render the regular calendar
+  if (!isCurrentMonth) {
+    return (
+      <Calendar
+        calendarMonthId={calendarMonthId}
+        theme={theme}
+        calendarActiveDateRanges={calendarActiveDateRanges}
+        onCalendarDayPress={onCalendarDayPress}
+      />
+    );
+  }
+  
+  // For the current month, we'll just prevent selection of future dates
+  // We can't style them differently with the current API limitations
+  return (
+    <Calendar
+      calendarMonthId={calendarMonthId}
+      theme={theme}
+      calendarActiveDateRanges={calendarActiveDateRanges}
+      onCalendarDayPress={(dateId) => {
+        // Parse the date
+        const dateParts = dateId.split('-');
+        const clickedDate = new Date(
+          parseInt(dateParts[0]), 
+          parseInt(dateParts[1]) - 1, 
+          parseInt(dateParts[2])
+        );
+        
+        // Reset hours to ensure accurate date comparison
+        const todayCopy = new Date();
+        todayCopy.setHours(0, 0, 0, 0);
+        
+        // If it's a future date, don't allow selection
+        if (clickedDate > todayCopy) {
+          return; // Don't proceed with selection
+        }
+        
+        // Otherwise, proceed with the original handler
+        onCalendarDayPress(dateId);
+      }}
+    />
+  );
+};
+
 const storeData = async (value) => {
   try {
     const jsonValue = JSON.stringify(value);
@@ -112,6 +168,22 @@ export default function App() {
     const soberPercentage = calculateSoberPercentage(currentMonth);
     const monthName = currentMonth.toLocaleString('default', { month: 'long' });
     const year = currentMonth.getFullYear();
+    
+    // Create a custom theme for this month
+    let monthTheme = JSON.parse(JSON.stringify(linearTheme)); // Deep clone
+    
+    // Special handling for the current month (i === 0)
+    if (i === 0) {
+      // Get today's date to identify future dates
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      // We need to disable the custom styling for future dates since we can't access the date within the style function
+      // Instead, let's use a simpler approach to style all days in the current month consistently
+      
+      // No need to modify the idle style for future dates since we can't reliably determine them
+      // Keep the original styling for all days in the current month
+    }
 
     months.push(
       <View style={styles.calbox} key={currentMonthId}> 
@@ -121,7 +193,8 @@ export default function App() {
             {soberPercentage}% Non-drinking Days
           </Text>
         </View>
-        <Calendar
+        <FutureAwareCalendar
+          currentMonth={currentMonth}
           calendarMonthId={currentMonthId}
           theme={linearTheme}
           calendarActiveDateRanges={dateRanges}
