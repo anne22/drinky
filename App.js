@@ -127,16 +127,19 @@ export default function App() {
     
     // Check if this is the current month
     const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset hours to ensure accurate date comparison
     const isCurrentMonth = today.getMonth() === month && today.getFullYear() === year;
     
-    // For current month, only count days that have passed
+    // For current month, only count days that have passed (including today)
     const totalDaysToCount = isCurrentMonth ? today.getDate() : daysInMonth;
     
     // Count sober days in this month
     let soberDays = 0;
     for (let day = 1; day <= totalDaysToCount; day++) {
       const date = new Date(year, month, day);
+      date.setHours(0, 0, 0, 0); // Ensure time part is zeroed out for proper date string generation
       const dateId = toDateId(date);
+      
       if (selectedDates.has(dateId)) {
         soberDays++;
       }
