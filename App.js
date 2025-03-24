@@ -112,18 +112,17 @@ let linearTheme = {
       textAlign: "center",
       color: "black",
       fontWeight: "700",
-      textDecorationLine: "underline",
       fontSize: 20,
       backgroundColor: "#a2a3a3",
-      padding: 1,
-      minHeight: 25,
+      padding: 2,
+      minHeight: 30,
       marginBottom: 70,
       marginTop: 80,
     }
   },itemDay: {
     idle: ({ isPressed, isWeekend }) => ({
       container: {
-        backgroundColor: isPressed ? "transparent" : "grey",
+        backgroundColor: isPressed ? "transparent" : "#FE4A85",
         borderRadius: 4,
       },
       content: {
@@ -142,7 +141,7 @@ let linearTheme = {
     }),
     active: ({ isEndOfRange, isStartOfRange }) => ({
       container: {
-        backgroundColor: "lightgrey",
+        backgroundColor: "#1C9",
         borderTopLeftRadius: isStartOfRange ? 4 : 0,
         borderBottomLeftRadius: isStartOfRange ? 4 : 0,
         borderTopRightRadius: isEndOfRange ? 4 : 0,
