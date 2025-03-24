@@ -238,6 +238,15 @@ export default function App() {
           <Text style={styles.statsText}>
             {soberPercentage}% Non-drinking Days
           </Text>
+          {/* Progress Bar */}
+          <View style={styles.progressBarContainer}>
+            <View 
+              style={[
+                styles.progressBar, 
+                { width: `${soberPercentage}%` }
+              ]} 
+            />
+          </View>
         </View>
         <FutureAwareCalendar
           currentMonth={currentMonth}
@@ -277,6 +286,15 @@ export default function App() {
             <>
               <Text style={styles.overallStatsTitle}>Overall Progress</Text>
               <Text style={styles.overallStatsPercentage}>{percentage}% Non-drinking Days</Text>
+              {/* Overall Progress Bar */}
+              <View style={styles.overallProgressBarContainer}>
+                <View 
+                  style={[
+                    styles.overallProgressBar, 
+                    { width: `${percentage}%` }
+                  ]} 
+                />
+              </View>
               <Text style={styles.overallStatsSubtext}>{dateRange} • {soberDays} / {totalDays} days total</Text>
             </>
           );
@@ -383,6 +401,7 @@ let styles = StyleSheet.create({
     marginBottom: -24,
     marginTop: 10,
     alignItems: 'center',
+    width: '100%',
   },
   monthTitle: {
     fontSize: 20,
@@ -394,6 +413,7 @@ let styles = StyleSheet.create({
     fontSize: 16,
     color: '#42d6b1',
     fontWeight: '600',
+    marginBottom: 8,
   },
   overallStatsContainer: {
     backgroundColor: '#2a3132',
@@ -420,7 +440,7 @@ let styles = StyleSheet.create({
   },
   overallStatsPercentage: {
     fontSize: 28,
-    color: '#42d6b1',
+    color: '#4d7',
     fontWeight: '700',
     marginBottom: 8,
   },
@@ -428,5 +448,31 @@ let styles = StyleSheet.create({
     fontSize: 14,
     color: 'rgba(255, 255, 255, 0.7)',
     fontWeight: '500',
+  },
+  progressBarContainer: {
+    backgroundColor: 'rgba(50, 50, 50, 0.5)',
+    borderRadius: 4,
+    height: 8,
+    width: '90%',
+    marginBottom: 10,
+    overflow: 'hidden',
+  },
+  progressBar: {
+    backgroundColor: '#42d6b1',
+    borderRadius: 4,
+    height: '100%',
+  },
+  overallProgressBarContainer: {
+    backgroundColor: 'rgba(50, 50, 50, 0.8)',
+    borderRadius: 4,
+    height: 8,
+    width: '90%',
+    marginBottom: 10,
+    overflow: 'hidden',
+  },
+  overallProgressBar: {
+    backgroundColor: '#4d7',
+    borderRadius: 4,
+    height: '100%',
   },
 });
