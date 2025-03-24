@@ -146,6 +146,52 @@ export default function App() {
     return Math.round((soberDays / totalDaysToCount) * 100);
   }
 
+  function calculateOverallStats() {
+    if (selectedDates.size === 0) {
+      return { percentage: 0, totalDays: 0 };
+    }
+
+    // Get all dates from selectedDates and convert to Date objects
+    const dateObjects = Array.from(selectedDates).map(dateId => {
+      const [year, month, day] = dateId.split('-').map(num => parseInt(num));
+      return new Date(year, month - 1, day);
+    });
+
+    // Find the earliest recorded date
+    const earliestDate = new Date(Math.min(...dateObjects));
+    
+    // Get today's date
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    // Calculate the date 6 months ago
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(today.getMonth() - 6);
+    sixMonthsAgo.setHours(0, 0, 0, 0);
+    
+    // Use either the earliest date or six months ago, whichever is more recent
+    const startDate = earliestDate < sixMonthsAgo ? sixMonthsAgo : earliestDate;
+    
+    // Count total days in the period
+    let totalDays = 0;
+    let soberDays = 0;
+    let currentDate = new Date(startDate);
+    
+    while (currentDate <= today) {
+      totalDays++;
+      const dateId = toDateId(currentDate);
+      if (selectedDates.has(dateId)) {
+        soberDays++;
+      }
+      // Move to next day
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    
+    const percentage = totalDays > 0 ? Math.round((soberDays / totalDays) * 100) : 0;
+    
+    return { percentage, soberDays, totalDays };
+  }
+
   function onDrank() {
     setShowConfirmation(false);
     if (selectedDates.has(currentdate)) {
@@ -221,6 +267,21 @@ export default function App() {
         </View>
       </View>
       </Modal>
+
+      {/* Overall Statistics Box */}
+      <View style={styles.overallStatsContainer}>
+        {(() => {
+          const { percentage, soberDays, totalDays } = calculateOverallStats();
+          const dateRange = totalDays <= 180 ? `Last ${totalDays} days` : 'Last 6 months';
+          return (
+            <>
+              <Text style={styles.overallStatsTitle}>Overall Progress</Text>
+              <Text style={styles.overallStatsPercentage}>{percentage}% Non-drinking Days</Text>
+              <Text style={styles.overallStatsSubtext}>{dateRange} • {soberDays} / {totalDays} days total</Text>
+            </>
+          );
+        })()}
+      </View>
 
       {months}
 
@@ -333,5 +394,39 @@ let styles = StyleSheet.create({
     fontSize: 16,
     color: '#42d6b1',
     fontWeight: '600',
+  },
+  overallStatsContainer: {
+    backgroundColor: '#2a3132',
+    padding: 20,
+    borderRadius: 12,
+    marginTop: 20,
+    marginBottom: 30,
+    marginHorizontal: 15,
+    alignItems: 'center',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    elevation: 7,
+  },
+  overallStatsTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 10,
+  },
+  overallStatsPercentage: {
+    fontSize: 28,
+    color: '#42d6b1',
+    fontWeight: '700',
+    marginBottom: 8,
+  },
+  overallStatsSubtext: {
+    fontSize: 14,
+    color: 'rgba(255, 255, 255, 0.7)',
+    fontWeight: '500',
   },
 });
