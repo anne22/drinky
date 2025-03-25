@@ -21,3 +21,12 @@ To add a new device, run this command:
 ```
 eas device:create
 ```
+
+To list existing devices, run:
+
+```
+eas device:list
+```
+
+
+```
