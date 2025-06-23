@@ -12,7 +12,8 @@ function listFiles(dir, baseDir = dir) {
       console.log(relPath + '/');
       listFiles(fullPath, baseDir);
     } else {
-      console.log(relPath);
+      const stats = fs.statSync(fullPath);
+      console.log(`${relPath} (${stats.size} bytes)`);
     }
   }
 }
