@@ -12,3 +12,8 @@ To create a new build, run this command:
 ```
  eas build --profile preview --platform ios
 ```
+
+ ## Authors
+  
+  - Anne Leuschner (<anneleuschner@gmail.com>)
+  - Scott Chacon (<schacon@gmail.com>)
