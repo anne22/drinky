@@ -3,6 +3,7 @@ import { Calendar, toDateId } from "@marceloterreiro/flash-calendar";
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Modal, Pressable, ScrollView } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
 
 // Custom component to handle future dates
 const FutureAwareCalendar = ({ currentMonth, calendarMonthId, theme, calendarActiveDateRanges, onCalendarDayPress }) => {
@@ -82,9 +83,11 @@ export default function App() {
   const [dates, setDates] = useState(new Set());
   const [currentdate, setcurrentdate] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false); 
+  const [appIsReady, setAppIsReady] = useState(false);
   
-  // Load data when component mounts
+  // Keep the splash screen visible while we fetch resources
   useEffect(() => {
+    SplashScreen.preventAutoHideAsync();
     const loadData = async () => {
       try {
         const jsonValue = await AsyncStorage.getItem('sober-dates');
@@ -93,11 +96,18 @@ export default function App() {
         setDates(new Set(loadedDates));
       } catch (e) {
         console.error('Error loading data:', e);
+      } finally {
+        setAppIsReady(true);
       }
     };
-    
     loadData();
   }, []);
+
+  useEffect(() => {
+    if (appIsReady) {
+      SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
   
   function datesToRanges(dates) {
     return Array.from(selectedDates).map((date) => {
@@ -263,7 +273,13 @@ export default function App() {
   }
 
   return (
-    <ScrollView>
+    <ScrollView
+      onLayout={async () => {
+        if (appIsReady) {
+          await SplashScreen.hideAsync();
+        }
+      }}
+    >
     <View style={styles.container}> 
     
       <Modal animationType="slide" transparent={true} visible={showConfirmation} >
